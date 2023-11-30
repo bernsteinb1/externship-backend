@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def home():
-    return '<h1>Welcome to the API</h1><p>For now, the only endpoint is <a href="/play_cards/">play_cards</a></p>'
+    return '<h1>Welcome to the API</h1><p>For now, the only endpoint is <a href="/play_cards/">play_cards</a></p><p>If this shows up, auto-deployment is working</p>'
 
 
 @app.route('/play_cards/')
