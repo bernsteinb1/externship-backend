@@ -2,7 +2,7 @@ FROM  python:3.11-alpine3.18
 
 WORKDIR ./api
 
-COPY ../../../../../../Desktop .
+COPY . .
 
 RUN pip install flask
 
