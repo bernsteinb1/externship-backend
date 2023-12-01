@@ -1,0 +1,2 @@
+# ignore polly_config.py, contains sensitive information.
+polly_config.py
