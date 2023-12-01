@@ -6,7 +6,7 @@ COPY . .
 
 RUN pip install flask
 
-EXPOSE 5105
+EXPOSE 80
 
 CMD ["python3", "api.py"]
 

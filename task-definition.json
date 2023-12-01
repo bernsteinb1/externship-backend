@@ -1,20 +1,19 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-2:698256564046:task-definition/Testing:1",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-2:698256564046:task-definition/Testing:5",
     "containerDefinitions": [
         {
             "name": "2023Externship",
-            "image": "698256564046.dkr.ecr.us-east-2.amazonaws.com/externship-2023:latest",
+            "image": "698256564046.dkr.ecr.us-east-2.amazonaws.com/externship-2023:45b8b3af9856bc51a84a1434997c80c2e455cb54",
             "cpu": 0,
             "portMappings": [
                 {
-                    "containerPort": 5105,
-                    "hostPort": 5105,
+                    "name": "2023externship-80-tcp",
+                    "containerPort": 80,
+                    "hostPort": 80,
                     "protocol": "tcp"
                 }
             ],
             "essential": true,
-            "entryPoint": [],
-            "command": [],
             "environment": [],
             "mountPoints": [],
             "volumesFrom": [],
@@ -24,14 +23,15 @@
                     "awslogs-group": "/ecs/Testing",
                     "awslogs-region": "us-east-2",
                     "awslogs-stream-prefix": "ecs"
-                }
+                },
+                "secretOptions": []
             }
         }
     ],
     "family": "Testing",
     "executionRoleArn": "arn:aws:iam::698256564046:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 1,
+    "revision": 5,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -67,7 +67,11 @@
     ],
     "cpu": "256",
     "memory": "512",
-    "registeredAt": "2023-11-30T13:47:30.480000-06:00",
+    "runtimePlatform": {
+        "cpuArchitecture": "X86_64",
+        "operatingSystemFamily": "LINUX"
+    },
+    "registeredAt": "2023-12-01T14:06:41.204Z",
     "registeredBy": "arn:aws:iam::698256564046:root",
     "tags": []
 }
