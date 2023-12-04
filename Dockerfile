@@ -5,6 +5,7 @@ WORKDIR ./api
 COPY . .
 
 RUN pip install flask
+RUN pip install Flask-CORS
 
 EXPOSE 80
 
