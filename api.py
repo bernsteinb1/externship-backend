@@ -1,6 +1,8 @@
 from flask import Flask, send_file
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app, origins="*")
 
 sound_files = ['output.mp3', 'clock.mp3', 'geese.mp3', 'laser.mp3', 'orchestra.mp3']
 
