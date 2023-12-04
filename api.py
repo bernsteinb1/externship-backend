@@ -1,5 +1,5 @@
 from flask import Flask, send_file
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
 CORS(app, origins="*")
@@ -12,6 +12,7 @@ def home():
 
 
 @app.route('/play_cards/<int:sound_id>/')
+@cross_origin()
 def play_cards(sound_id):
     # Code for playing cards goes here
     return send_file(sound_files[sound_id], download_name='output.mp3')  # should probably return some form of data for front end
