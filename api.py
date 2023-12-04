@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, send_file
 
 app = Flask(__name__)
 
@@ -11,7 +11,7 @@ def home():
 @app.route('/play_cards/')
 def play_cards():
     # Code for playing cards goes here
-    return {'text': 'cards_played'}  # should probably return some form of data for front end
+    return send_file('output.mp3', download_name='output.mp3')  # should probably return some form of data for front end
 
 
 if __name__ == '__main__':
