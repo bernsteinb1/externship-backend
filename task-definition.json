@@ -1,5 +1,5 @@
 {
-    "taskDefinitionArn": "arn:aws:ecs:us-east-2:698256564046:task-definition/Testing:12",
+    "taskDefinitionArn": "arn:aws:ecs:us-east-2:698256564046:task-definition/Testing:14",
     "containerDefinitions": [
         {
             "name": "2023Externship",
@@ -29,9 +29,10 @@
         }
     ],
     "family": "Testing",
-    "executionRoleArn": "arn:aws:iam::698256564046:role/PollyAccessForECS",
+    "taskRoleArn": "arn:aws:iam::698256564046:role/PollyAccessForECS",
+    "executionRoleArn": "arn:aws:iam::698256564046:role/ecsTaskExecutionRole",
     "networkMode": "awsvpc",
-    "revision": 12,
+    "revision": 14,
     "volumes": [],
     "status": "ACTIVE",
     "requiresAttributes": [
@@ -46,6 +47,9 @@
         },
         {
             "name": "com.amazonaws.ecs.capability.docker-remote-api.1.19"
+        },
+        {
+            "name": "com.amazonaws.ecs.capability.task-iam-role"
         },
         {
             "name": "ecs.capability.execution-role-ecr-pull"
@@ -71,7 +75,7 @@
         "cpuArchitecture": "X86_64",
         "operatingSystemFamily": "LINUX"
     },
-    "registeredAt": "2023-12-04T22:09:11.973Z",
+    "registeredAt": "2023-12-04T22:15:33.908Z",
     "registeredBy": "arn:aws:iam::698256564046:root",
     "tags": []
 }
