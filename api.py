@@ -32,9 +32,9 @@ def make_card():
 def get_card(card_id):
     idx = 0 if card_id[0] == 'f' else 1
     if idx == 0:
-        cid = int(card_id[5:])
+        cid = card_id[5:]
     else:
-        cid = int(card_id[4:])
+        cid = card_id[4:]
     return send_file(card_files[cid][idx])
 
 
