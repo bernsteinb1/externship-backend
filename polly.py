@@ -1,21 +1,29 @@
-import polly_config
 import boto3 # Amazon's Python SDK
 
-aws_access_key_id = polly_config.aws_access_key_id
-aws_secret_access_key = polly_config.aws_secret_access_key
-aws_region = polly_config.aws_region
 
-'''
-In your local repo, create a polly_config.py file. Write the following and put in your own keys and region.
+# Define the IAM role ARN created in the AWS Console
+role_arn = 'arn:aws:iam::698256564046:role/polly-role'
 
-aws_access_key_id = 'YOUR_ACCESS_KEY'
-aws_secret_access_key = 'YOUR_SECRET_KEY'
-aws_region = 'YOUR_AWS_REGION'
-'''
+# Create an STS (Security Token Service) client
+sts_client = boto3.client('sts')
+
+# Specify the role ARN and a session name
+assume_role_response = sts_client.assume_role(
+    RoleArn=role_arn,
+    RoleSessionName='BesternshipPollySession'  # Provide a unique session name
+)
+
+# Extract temporary security credentials
+credentials = assume_role_response['Credentials']
 
 try:
-    # Configure Boto3
-    polly = boto3.client('polly', aws_access_key_id=aws_access_key_id, aws_secret_access_key=aws_secret_access_key, region_name=aws_region)
+    # Create a Polly client using the temporary credentials
+    polly_client = boto3.client(
+        'polly',
+        aws_access_key_id=credentials['AccessKeyId'],
+        aws_secret_access_key=credentials['SecretAccessKey'],
+        aws_session_token=credentials['SessionToken']
+    )
 
     # Specify text and voice
     # In the context of our web app, the front end should include the text to convert to audio in its API request
@@ -23,7 +31,7 @@ try:
     voice_id = 'Joanna'
 
     # Invoke Amazon Polly API
-    response = polly.synthesize_speech(
+    response = polly_client.synthesize_speech(
         Text=text,
         OutputFormat='mp3',
         VoiceId=voice_id
@@ -37,7 +45,7 @@ except boto3.exceptions.Boto3Error as e:
     # Handle general Boto3 errors
     print(f"Boto3 error: {e}")
 
-except polly.exceptions.PollyError as e:
+except polly_client.exceptions.PollyError as e:
     # Handle specific Polly errors
     print(f"Amazon Polly error: {e}")
 
