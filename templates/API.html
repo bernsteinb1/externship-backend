@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>API</title>
+    <style>
+        .endpoint {
+            border: 3px solid black;
+        }
+        .comment {
+            color: grey;
+        }
+    </style>
+</head>
+<body>
+<h1>Welcome to the API</h1>
+<div class="endpoint">
+    <h2><a href="/create-card/">Create Card</a></h2>
+    <h3>Method: POST</h3>
+    <h4>Triggers TTS generation for the front and back of card</h4>
+    <p>This mostly won't work properly until S3 Bucket is properly implemented</p>
+</div>
+<div class="endpoint">
+    <h2><a href="/get-card/">Create Card</a></h2>
+    <h3>Method: GET</h3>
+    <h4>Gets TTS file</h4>
+    <p>This mostly won't work properly until S3 Bucket is properly implemented.</p>
+    <p>To use, add text to the end of the endpoint</p>
+</div>
+<div class="endpoint">
+    <h2><a href="/make-user/">Make User</a></h2>
+    <h3>Method: POST</h3>
+    <h4>Creates a user in the DB.</h4>
+    <p>Pass in JSON of the following form.</p>
+    <p>{<br>
+        'UserID': str  <span class="comment">// probably use whatever token is given by Google</span><br>
+        }</p>
+</div>
+<div class="endpoint">
+    <h2><a href="/make-card-set/">Make Card Set</a></h2>
+    <h3>Method: POST</h3>
+    <h4>Creates a CardSet owned by a user in the DB.</h4>
+    <p>Pass in JSON of the following form.</p>
+    <p>{<br>
+        'UserID': str,<br>
+        'Name': str <br>
+        }</p>
+    <p><b>Returns:</b> The ID of the Card Set in the database.</p>
+</div>
+<div class="endpoint">
+    <h2><a href="/delete-card-set/">Delete Card Set</a></h2>
+    <h3>Method: POST</h3>
+    <h4>Deletes a CardSet from the DB.</h4>
+    <p>Pass in JSON of the following form.</p>
+    <p>{<br>
+        'UserID': str,<br>
+        'CardSetID': str <br>
+        }</p>
+</div>
+<div class="endpoint">
+    <h2><a href="/add-cards/">Add Cards</a></h2>
+    <h3>Method: POST</h3>
+    <h4>Adds cards to a CardSet in the DB.</h4>
+    <p>Pass in JSON of the following form.</p>
+    <p>{<br>
+        'UserID': str,<br>
+        'CardSetID': str,<br>
+        'cards': [<br>
+        ['front', 'back']<br>
+        ]<br>
+        }</p>
+</div>
+<div class="endpoint">
+    <h2><a href="/delete-card/">Delete Card</a></h2>
+    <h3>Method: POST</h3>
+    <h4>Deletes a card from CardSet in the DB.</h4>
+    <p>Pass in JSON of the following form.</p>
+    <p>{<br>
+        'UserID': str,<br>
+        'CardSetID': str, <br>
+        'CardIdx': int  <span class="comment">// Use zero-indexing for this</span><br>
+        }</p>
+</div>
+<div class="endpoint">
+    <h2><a href="/update-card/">Update Card</a></h2>
+    <h3>Method: POST</h3>
+    <h4>Updates a card in a CardSet.</h4>
+    <p>Pass in JSON of the following form.</p>
+    <p>{<br>
+        'UserID': str<br>
+        'CardSetID': str<br>
+        'CardIdx': int  <span class="comment">// Use zero-indexing for this</span><br>
+        'NewCard': [
+        ['front', 'back']<br>
+        ]<br>
+        }</p>
+</div>
+<div class="endpoint">
+    <h2><a href="/get-owned-sets/">Get Owned Sets</a></h2>
+    <h3>Method: GET</h3>
+    <h4>Gets the Set IDs and Names of a user.</h4>
+    <p>Put User ID at the end of the endpoint.</p>
+    <p><b>Returns:</b> JSON in the following form:</p>
+    <p>{<br>
+        'SetID1': 'SetName1',<br>
+        'SetID2': 'SetName2',<br>
+        ...<br>
+        }</p>
+</div>
+<div class="endpoint">
+    <h2><a href="/get-cards-in-set/">Get Cards in Set</a></h2>
+    <h3>Method: GET</h3>
+    <h4>Retrieves the cards in a specific set.</h4>
+    <p>Put Set ID at the end of the endpoint.</p>
+    <p><b>Returns:</b> JSON in the following form:</p>
+    <p>{'set: [<br>
+        ['front1', 'back1'],<br>
+        ['front2', 'back2'],<br>
+        ...<br<
+        ]<br>
+        }</p>
+</div>
+</body>
+</html>
