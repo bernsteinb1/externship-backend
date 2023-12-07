@@ -21,7 +21,7 @@
     <p>This mostly won't work properly until S3 Bucket is properly implemented</p>
 </div>
 <div class="endpoint">
-    <h2><a href="/get-card/">Create Card</a></h2>
+    <h2><a href="/get-card/">Get Card</a></h2>
     <h3>Method: GET</h3>
     <h4>Gets TTS file</h4>
     <p>This mostly won't work properly until S3 Bucket is properly implemented.</p>
@@ -30,7 +30,7 @@
 <div class="endpoint">
     <h2><a href="/make-user/">Make User</a></h2>
     <h3>Method: POST</h3>
-    <h4>Creates a user in the DB.</h4>
+    <h4>Creates a user in the DB. If user already exists, it will stop.</h4>
     <p>Pass in JSON of the following form.</p>
     <p>{<br>
         'UserID': str  <span class="comment">// probably use whatever token is given by Google</span><br>

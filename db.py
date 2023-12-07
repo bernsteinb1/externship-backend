@@ -4,6 +4,17 @@ import uuid
 
 def make_user(user_id):
     db_conn = Session().client('dynamodb')
+    response = db_conn.get_item(
+        TableName='Users',
+        Key={
+            'UserID': {
+                'S': f'{user_id}'
+            }
+        }
+    )
+    if 'Item' in response:
+        return 'User already exists'
+
     db_conn.put_item(
         TableName='Users',
         Item={
@@ -295,6 +306,7 @@ def get_cards_in_set(set_id):
 
 
 if __name__ == '__main__':
+    print(make_user('1'))
     # print(make_user('1'))
     # gerald_id = make_card_set('1', 'Gerald')
     # print(add_items_to_card_set('1', gerald_id, [['hello', 'hola'], ['goodbye', 'adios']]))
@@ -304,4 +316,4 @@ if __name__ == '__main__':
     # print(update_card(gerald_id, 1, '1', ['I will delete this', 'Be destroyed.']))
     # wayne_id = make_card_set('1', 'Wayne')
     # print(delete_card_set('1', wayne_id))
-    print(delete_card('1', '39b032b7-a537-4416-9a32-6e402417982d', 1))
+    # print(delete_card('1', '39b032b7-a537-4416-9a32-6e402417982d', 1))
