@@ -60,6 +60,22 @@ def create_card_set():
 # This POST request should contain the following info:
 # {
 #   'UserID': str,
+#   'CardSetID': str,
+#   'NewName': str
+# }
+@app.route('/rename-card-set/', methods=['POST'])
+def rename_card_set():
+    info = request.get_json()
+    user_id = info['UserID']
+    card_set_id = info['CardSetID']
+    new_name = info['NewName']
+    return db.rename_card_set(user_id, card_set_id, new_name)
+
+
+
+# This POST request should contain the following info:
+# {
+#   'UserID': str,
 #   'CardSetID': str
 # }
 @app.route('/delete-card-set/', methods=['POST'])

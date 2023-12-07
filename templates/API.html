@@ -6,6 +6,7 @@
     <style>
         .endpoint {
             border: 3px solid black;
+            margin: 10px;
         }
         .comment {
             color: grey;
@@ -44,6 +45,18 @@
     <p>{<br>
         'UserID': str,<br>
         'Name': str <br>
+        }</p>
+    <p><b>Returns:</b> The ID of the Card Set in the database.</p>
+</div>
+<div class="endpoint">
+    <h2><a href="/rename-card-set/">Rename Card Set</a></h2>
+    <h3>Method: POST</h3>
+    <h4>Renames an existing CardSet owned by a user in the DB.</h4>
+    <p>Pass in JSON of the following form.</p>
+    <p>{<br>
+        'UserID': str,<br>
+        'CardSetID': str,<br>
+        'NewName': str <br>
         }</p>
     <p><b>Returns:</b> The ID of the Card Set in the database.</p>
 </div>
@@ -90,9 +103,7 @@
         'UserID': str<br>
         'CardSetID': str<br>
         'CardIdx': int  <span class="comment">// Use zero-indexing for this</span><br>
-        'NewCard': [
-        ['front', 'back']<br>
-        ]<br>
+        'NewCard': ['front', 'back']<br>
         }</p>
 </div>
 <div class="endpoint">
@@ -116,7 +127,7 @@
     <p>{'set: [<br>
         ['front1', 'back1'],<br>
         ['front2', 'back2'],<br>
-        ...<br<
+        ...<br>
         ]<br>
         }</p>
 </div>
