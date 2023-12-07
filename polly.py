@@ -1,4 +1,4 @@
-from boto3 import Session # Amazon's Python SDK
+from boto3 import Session  # Amazon's Python SDK
 import os
 from tempfile import gettempdir
 from contextlib import closing
