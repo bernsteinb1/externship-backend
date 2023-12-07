@@ -1,6 +1,6 @@
 from flask import Flask, send_file, request, render_template
 from flask_cors import CORS, cross_origin
-from polly import get_tts
+from polly import get_tts, get_tts_s3
 import db
 
 app = Flask(__name__)
@@ -21,8 +21,8 @@ def home():
 @cross_origin()
 def make_card():
     card = request.get_json()
-    card_files[card['id']] = [get_tts(card['front'])]
-    card_files[card['id']].append(get_tts(card['back']))
+    card_files[card['id']] = [get_tts_s3(card['front'])]
+    card_files[card['id']].append(get_tts_s3(card['back']))
     return 'card-made'
 
 
