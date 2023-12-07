@@ -4,6 +4,17 @@ import uuid
 
 def make_user(user_id):
     db_conn = Session().client('dynamodb')
+    response = db_conn.get_item(
+        TableName='Users',
+        Key={
+            'UserID': {
+                'S': f'{user_id}'
+            }
+        }
+    )
+    if 'Item' in response:
+        return 'User already exists'
+
     db_conn.put_item(
         TableName='Users',
         Item={
@@ -70,6 +81,49 @@ def make_card_set(user_id, card_set_name):
         }
     )
     return card_set_id
+
+
+def rename_card_set(user_id, card_set_id, new_name):
+    if not verify_set_ownership(user_id, card_set_id):
+        return "You do not own this set!"
+    db_conn = Session().client('dynamodb')
+    response = db_conn.get_item(
+        TableName='CardSets',
+        Key={
+            'CardSetID': {
+                'S': card_set_id
+            }
+        }
+    )
+    if 'Item' not in response:
+        return 'Set does not exist'
+    if 'CardFronts' not in response['Item']:
+        db_conn.put_item(
+            TableName='CardSets',
+            Item={
+                'CardSetID': {
+                    'S': card_set_id
+                },
+                'Name': {
+                    'S': new_name
+                }
+            }
+        )
+    else:
+        db_conn.put_item(
+            TableName='CardSets',
+            Item={
+                'CardSetID': {
+                    'S': card_set_id
+                },
+                'Name': {
+                    'S': new_name
+                },
+                'CardFronts': response['Item']['CardFronts'],
+                'CardBacks': response['Item']['CardBacks']
+            }
+        )
+    return 'Name updated.'
 
 
 def delete_card_set(user_id, card_set_id):
@@ -304,4 +358,5 @@ if __name__ == '__main__':
     # print(update_card(gerald_id, 1, '1', ['I will delete this', 'Be destroyed.']))
     # wayne_id = make_card_set('1', 'Wayne')
     # print(delete_card_set('1', wayne_id))
-    print(delete_card('1', '39b032b7-a537-4416-9a32-6e402417982d', 1))
+    # print(delete_card('1', '39b032b7-a537-4416-9a32-6e402417982d', 1))
+    print(rename_card_set('104752094341288025122', '7a24d055-c7c4-4671-8832-7b6f3d7aef19', 'Changed Name'))
