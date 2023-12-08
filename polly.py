@@ -19,6 +19,7 @@ def check_dynamodb_key(dynamodb_table, key):
 
     return 'Item' in response
 
+# Generates an audio file using Polly TTS, uploads it to the specified S3 bucket
 def upload_s3_audio(text, s3_bucket):
     polly = boto3.client('polly')
     
