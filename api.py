@@ -1,10 +1,12 @@
 from flask import Flask, send_file, request, render_template, redirect
 from flask_cors import CORS, cross_origin
 from polly import get_tts_s3
+from werkzeug.middleware.proxy_fix import ProxyFix
 import db
 
 app = Flask(__name__)
 app.config['SERVER_NAME'] = 'https://api.backend.online'
+app.config['PREFERRED_URL_SCHEME'] = 'https'
 CORS(app, origins="*")
 
 
