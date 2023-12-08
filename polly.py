@@ -1,3 +1,4 @@
+import boto3
 from boto3 import Session  # Amazon's Python SDK
 import os
 import tempfile
@@ -9,56 +10,36 @@ from botocore.exceptions import NoCredentialsError
 Helper functions for get_tts_s3()
 '''
 # key is the text from the card (front or back) to be converted to audio
-def check_dynamodb_key(table, key):
-    dynamodb = Session().client('dynamodb')
-    table = dynamodb.Table(table)
+def check_dynamodb_key(dynamodb_table, key):
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.Table(dynamodb_table)
     
     response = table.get_item(
-        Key={'cardText': {
-            'S': key
-            }
-        }
+        Key={'cardText': key}
     )
 
     return 'Item' in response
 
 def upload_s3_audio(text, s3_bucket):
-    polly = Session().client('polly')
-    s3 = Session().client('s3')
+    polly = boto3.client('polly')
     
     response = polly.start_speech_synthesis_task(
         OutputFormat='mp3',
         Text=text,
-        VoiceId='Joanna'
+        VoiceId='Joanna',
+        OutputS3BucketName=s3_bucket
     )
     
     task_id = response['SynthesisTask']['TaskId']
     
-    # Wait for the task to complete
-    waiter = polly.get_waiter('speech_synthesis_task_completed')
-    waiter.wait(TaskId=task_id)
     
     # Get the URL of the generated audio file
     audio_url = polly.get_speech_synthesis_task(TaskId=task_id)['SynthesisTask']['OutputUri']
     
-    # Download the audio file to a temporary local file
-    _, local_audio_path = tempfile.mkstemp(suffix=".mp3")
-    s3.download_file(s3_bucket, audio_url.split('/')[-1], local_audio_path)
-    
-    return local_audio_path
-
-def upload_to_s3(s3_bucket, local_file_path, s3_key):
-    s3 = Session().client('s3')
-    
-    try:
-        s3.upload_file(local_file_path, s3_bucket, s3_key)
-        return True
-    except NoCredentialsError:
-        print("Credentials not available")
-        return False
+    return audio_url
     
 def update_dynamodb(table, key, s3_key):
-    dynamodb = Session().client('dynamodb')
+    dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table(table)
     
     table.put_item(
@@ -80,6 +61,7 @@ def get_tts_s3(text):
 
     if check_dynamodb_key(table, key):
         # Key exists, fetch the corresponding S3 audio file
+        print("Key exists; fetching its audio.")
         response = Session().client('dynamodb').get_item(
             TableName=table,
             Key={'cardText': {
@@ -90,9 +72,7 @@ def get_tts_s3(text):
         s3_key = response['Item']['s3_key']['S']
     else:
         # Key does not exist, generate and upload S3 audio file
-        local_audio_path = upload_s3_audio(key, s3_bucket)
-        s3_key = f"{key}.mp3"
-        upload_to_s3(s3_bucket, local_audio_path, s3_key)
+        s3_key = upload_s3_audio(key, s3_bucket)
         update_dynamodb(table, key, s3_key)
 
     print(f"S3 audio file key: {s3_key}")
