@@ -1,7 +1,6 @@
 import boto3
 from boto3 import Session  # Amazon's Python SDK
 import os
-import tempfile
 from tempfile import gettempdir
 from contextlib import closing
 from botocore.exceptions import NoCredentialsError
@@ -78,6 +77,7 @@ def get_tts_s3(text):
     print(f"S3 audio file key: {s3_key}")
     return s3_key
 
+# Deprecated
 def get_tts(text):
     session = Session()
     polly = session.client('polly')
