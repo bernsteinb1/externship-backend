@@ -5,7 +5,6 @@ from werkzeug.middleware.proxy_fix import ProxyFix
 import db
 
 app = Flask(__name__)
-app.config['SERVER_NAME'] = 'https://api.backend.online'
 app.config['PREFERRED_URL_SCHEME'] = 'https'
 CORS(app, origins="*")
 
