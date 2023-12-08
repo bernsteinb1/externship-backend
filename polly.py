@@ -32,7 +32,6 @@ def upload_s3_audio(text, s3_bucket):
     
     task_id = response['SynthesisTask']['TaskId']
     
-    
     # Get the URL of the generated audio file
     audio_url = polly.get_speech_synthesis_task(TaskId=task_id)['SynthesisTask']['OutputUri']
     

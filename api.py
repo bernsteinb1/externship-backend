@@ -1,12 +1,10 @@
-from flask import Flask, send_file, request, render_template
+from flask import Flask, send_file, request, render_template, redirect
 from flask_cors import CORS, cross_origin
-from polly import get_tts, get_tts_s3
+from polly import get_tts_s3
 import db
 
 app = Flask(__name__)
 CORS(app, origins="*")
-
-card_files = {}
 
 
 @app.route('/')
@@ -14,26 +12,17 @@ def home():
     return render_template('API.html')
 
 
-# Card: { id: number, front: string, back: string }
-# CardDeck: { id: number, name: string, content: Card[] }
-# DeckList: { id: number, name: string }[]  // a list of card deck info wihout content
 @app.route('/create-card/', methods=['POST'])
-@cross_origin()
-def make_card():
-    card = request.get_json()
-    card_files[card['id']] = [get_tts_s3(card['front'])]
-    card_files[card['id']].append(get_tts_s3(card['back']))
-    return 'card-made'
+def create_card():
+    req = request.get_json()
+    get_tts_s3(req['front'])
+    get_tts_s3(req['back'])
+    return 'TTS generated'
 
 
-@app.route('/get-card/<card_id>/')
-def get_card(card_id):
-    idx = 0 if card_id[0] == 'f' else 1
-    if idx == 0:
-        cid = card_id[5:]
-    else:
-        cid = card_id[4:]
-    return send_file(card_files[cid][idx])
+@app.route('/get-card/<text>/')
+def get_card(text):
+    return redirect(get_tts_s3(text))
 
 
 @app.route('/make-user/', methods=['POST'])

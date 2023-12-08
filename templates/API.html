@@ -19,14 +19,17 @@
     <h2><a href="/create-card/">Create Card</a></h2>
     <h3>Method: POST</h3>
     <h4>Triggers TTS generation for the front and back of card</h4>
-    <p>This mostly won't work properly until S3 Bucket is properly implemented</p>
+    <p>Pass in JSON containing at least this info:<br>
+    {<br>
+    'front': str,<br>
+    'back':str<br>
+    }</p>
 </div>
 <div class="endpoint">
     <h2><a href="/get-card/">Get Card</a></h2>
     <h3>Method: GET</h3>
     <h4>Gets TTS file</h4>
-    <p>This mostly won't work properly until S3 Bucket is properly implemented.</p>
-    <p>To use, add text to the end of the endpoint</p>
+    <p>To use, add text-to-be-transcribed to the end of the endpoint. May cause errors if called immediately after Create Card.</p>
 </div>
 <div class="endpoint">
     <h2><a href="/make-user/">Make User</a></h2>
