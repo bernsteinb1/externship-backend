@@ -4,6 +4,7 @@ from polly import get_tts_s3
 import db
 
 app = Flask(__name__)
+app.config['SERVER_NAME'] = 'https://api.backend.online'
 CORS(app, origins="*")
 
 
