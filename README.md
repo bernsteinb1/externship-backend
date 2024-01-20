@@ -7,7 +7,7 @@
 - Automatic deployment of github repository to https://api.soundcard.online
 - HTTPS encoding for private domains and routing through an AWS Load Balancer
 
-###Technologies Used:
+### Technologies Used:
 - Docker
 - AWS ECS, ECR, Polly, S3, Route 53, IAM, and EC2.
 - Python
